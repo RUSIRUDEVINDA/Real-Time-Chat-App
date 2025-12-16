@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chat App</title>
+    </head>
+    <body>
+        <h1>Real-Time Chat Application</h1>
+        <ul id="message"></ul>
+        
+        <!--  Input field and button to send messages -->
+        <input id="messageInput" placeholder="Type a message..."/> 
+        <button onclick="sendMessage()">Send</button>
+        
+        <!-- Socket.io client library -->
+        <script src="/socket.io/socket.io.js"></script> 
+        <script>
+            const socket = io(); // Connect to the server
+
+            function sendMessage(){
+                const input = document.getElementById("messageInput"); // Get input field
+                socket.emit("chat message", input.value);// Emit message to server, emit(It is used to send events from client to server or vice versa.)
+                input.value="";
+            }
+            // Listen for chat messages from server
+            socket.on("chat message",(msg)=>{
+                const li = document.createElement("li"); 
+                li.textContent = msg;// Set the message text
+                document.getElementById("message").appendChild(li) // Append the message to the list
+            });
+        </script>
+
+    </body>
+</html>
